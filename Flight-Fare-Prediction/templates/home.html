@@ -1,0 +1,471 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flight Price Prediction</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+      integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: "Montserrat", sans-serif;
+      }
+      .ans {
+        display: none;
+      }
+      .topbar {
+        background-color: #142a3f;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        padding-left: 20px;
+        overflow: hidden;
+      }
+      .body {
+        background-color: #92acd3;
+      }
+      .topbar h1 {
+        color: white;
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+      .heading {
+        padding: 20px;
+        overflow: hidden;
+      }
+      .heading h1 {
+        padding: 20px;
+        color: black;
+        font-size: 34px;
+        font-weight: 400;
+        font-weight: 700;
+        text-align: center;
+      }
+      .section {
+      }
+      .row {
+        margin-left: 60px;
+        padding: 5px;
+        align-items: center;
+        float: left;
+        overflow: hidden;
+        background-color: #92acd3;
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+      }
+      .box {
+        margin: 40px;
+        margin-bottom: 30px;
+        margin-top: 30px;
+        float: left;
+        overflow: hidden;
+      }
+      .box h5 {
+        padding: 5px;
+        font-size: 16px;
+      }
+      .box input {
+        margin: 5px;
+        padding: 10px;
+
+        width: 270px;
+        font-size: 14px;
+      }
+      .box select {
+        margin: 5px;
+        padding: 10px;
+        width: 270px;
+        font-size: 14px;
+      }
+      .break {
+        width: 100%;
+        height: 4vh;
+        background-color: #92acd3;
+      }
+      .clicks {
+        padding: 10px;
+        padding-left: 200px;
+        margin-left: 250px;
+        /* margin: auto; */
+        align-items: center;
+      }
+      img {
+        padding-right: 50px;
+        padding-left: 5px;
+      }
+
+      .btn {
+        text-decoration: none;
+        font-weight: 900;
+        text-align: center;
+        padding: 10px 20px;
+        cursor: pointer;
+        text-transform: uppercase;
+        border-radius: 5px;
+        display: inline-block;
+        margin-right: 50px;
+        color: #fff;
+        letter-spacing: 2px;
+        background-color: #142a3f;
+        border: double 2px transparent;
+        box-shadow: 0 10px 20px rgba(186, 171, 238, 0.3);
+      }
+      .btn:hover {
+        border: 2px solid #142a3f;
+        color: #142a3f;
+        background-color: #fff;
+        box-shadow: none;
+        background-image: none;
+      }
+      #test {
+        padding: 20px;
+        color: black;
+        font-size: 30px;
+        font-weight: 700;
+        text-align: center;
+      }
+
+      header {
+        background-color: #142a3f;
+        height: 66px;
+      }
+
+      header * {
+        color: white;
+      }
+
+      header .logo {
+        float: left;
+        height: inherit;
+        margin-left: 2em;
+      }
+
+      header .logo-text {
+        margin: 15px;
+        font-family: "Montserrat", sans-serif;
+        color: white;
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+
+      header .logo-text span {
+        color: #05f7ff;
+      }
+
+      header ul {
+        float: right;
+        margin: 0px;
+        padding: 0px;
+        list-style: none;
+      }
+
+      header ul li {
+        float: left;
+        position: relative;
+      }
+
+      header ul li ul {
+        position: absolute;
+        top: 66px;
+        right: 0px;
+        width: 180px;
+        display: none;
+        z-index: 88888;
+      }
+
+      header ul li:hover ul {
+        display: block;
+      }
+
+      header ul li ul li {
+        width: 100%;
+      }
+
+      header ul li ul li a {
+        padding: 10px;
+        background: white;
+        color: #444;
+      }
+
+      header ul li ul li a.logout {
+        color: red;
+      }
+
+      header ul li ul li a:hover {
+        background: #d5d6d6;
+      }
+
+      header ul li a {
+        display: block;
+        padding: 21px;
+        font-size: 1.1em;
+        text-decoration: none;
+      }
+
+      header ul li a:hover {
+        background-color: #92acd3;
+        transition: 0.5s;
+      }
+
+      header .menu-toggle {
+        display: none;
+      }
+
+      .page-wrapper {
+        min-height: 100%;
+      }
+
+      .page-wrapper a:hover {
+        color: #92acd3;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- As a heading -->
+    <header>
+      <div class="logo">
+        <h1 class="logo-text">Flight Hint</h1>
+      </div>
+      <i class="fa fa-bars menu-toggle"></i>
+      <!-- <ul class="nav">
+        <li>
+          <a href="#">
+            <i class="fa fa-user"></i>
+            Gokul
+          </a>
+        </li>
+      </ul> -->
+    </header>
+    <div class="break"></div>
+    <!-- <div class="topbar">
+      <h1>Flight Hint</h1>
+    </div>
+    <div class="break"></div> -->
+    <div class="heading"><h1>Fare Prediction</h1></div>
+
+    <form action="\predict" method="post">
+      <div class="section">
+        <div class="row">
+          <div class="box">
+            <h5>Departure Date</h5>
+            <input
+              type="datetime-local"
+              name="Dep_Time"
+              id="Dep_Time"
+              required="required"
+            />
+          </div>
+          <div class="box">
+            <h5>Arrival Date</h5>
+            <input
+              type="datetime-local"
+              name="Arrival_Time"
+              id="Arrival_Time"
+              required="required"
+            />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="box">
+            <h5>Source</h5>
+            <select name="Source" id="Source" required="required">
+              <option value="Delhi">Delhi</option>
+              <option value="Kolkata">Kolkata</option>
+              <option value="Mumbai">Mumbai</option>
+              <option value="Chennai">Chennai</option>
+            </select>
+          </div>
+          <div class="box">
+            <h5>Destination</h5>
+            <select name="Destination" id="Destination" required="required">
+              <option value="Cochin">Cochin</option>
+              <option value="Delhi">Delhi</option>
+              <!-- <option value="New Delhi">New Delhi</option> -->
+              <option value="Hyderabad">Hyderabad</option>
+              <option value="Kolkata">Kolkata</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="box">
+            <h5>Stopages</h5>
+            <select name="stops" required="required">
+              <option value="0">Non-Stop</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </div>
+          <div class="box">
+            <h5>Airline</h5>
+            <select name="airline" id="airline" required="required">
+              <option value="Jet Airways">Jet Airways</option>
+              <option value="IndiGo">IndiGo</option>
+              <option value="Air India">Air India</option>
+              <option value="Multiple carriers">Multiple carriers</option>
+              <option value="SpiceJet">SpiceJet</option>
+              <option value="Vistara">Vistara</option>
+              <option value="Air Asia">Air Asia</option>
+              <option value="GoAir">GoAir</option>
+              <option value="Multiple carriers Premium economy">
+                Multiple carriers Premium economy
+              </option>
+              <option value="Jet Airways Business">Jet Airways Business</option>
+              <option value="Vistara Premium economy">
+                Vistara Premium economy
+              </option>
+              <option value="Trujet">Trujet</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <img
+        src="https://n6novjtfgs-flywheel.netdna-ssl.com/wp-content/uploads/2019/06/undraw_adventure_4hum.png"
+        alt=""
+        width="650px"
+        height="auto"
+      />
+      <br /><br />
+      <div class="clicks">
+        <input type="submit" value="Submit" class="btn" />
+        <button onclick="fun1()" class="btn">View Prediction</button>
+        <button onclick="window.location.href='http://127.0.0.1:8081/flight/dashboard.php'" class="btn">Go Back</button>
+      </div>
+    </form>
+
+    <br />
+    <br />
+    <h3 class="ans">
+      Your Flight price is Rs
+      <span id="res">{{ prediction_text }}</span>
+    </h3>
+    <script>
+      function fun1() {
+        var s = document.getElementById("res").innerHTML;
+        s = s.replace("[", "");
+        s = s.replace("]", "");
+        s = s.replace(/,/g, "");
+        s = s.trim();
+        var a = s.split(" ");
+        document.getElementById("test").innerHTML =
+          "Predicted Flight Fare is  ₹ " + a[0];
+
+        let myChart = document.getElementById("myChart").getContext("2d");
+
+        // Global Options
+        Chart.defaults.global.defaultFontFamily = "Montserrat";
+        Chart.defaults.global.defaultFontSize = 14;
+        Chart.defaults.global.defaultFontColor = "#777";
+
+        let massPopChart = new Chart(myChart, {
+          type: "bar", // bar, horizontalBar, pie, line, doughnut, radar, polarArea
+          data: {
+            labels: [
+              "Day 1",
+              "Day 2",
+              "Day 3",
+              "Day 4",
+              "Day 5",
+              "Day 6",
+              "Day 7",
+              "Day 8",
+              "Day 9",
+              "Day 10",
+            ],
+            datasets: [
+              {
+                data: a,
+                //backgroundColor:'green',
+                backgroundColor: [
+                  "rgba(54, 162, 235, 0.6)",
+                  "rgba(54, 162, 235, 0.6)",
+                  "rgba(54, 162, 235, 0.6)",
+                  "rgba(54, 162, 235, 0.6)",
+                  "rgba(54, 162, 235, 0.6)",
+                  "rgba(54, 162, 235, 0.6)",
+                  "rgba(54, 162, 235, 0.6)",
+                  "rgba(54, 162, 235, 0.6)",
+                  "rgba(54, 162, 235, 0.6)",
+                  "rgba(54, 162, 235, 0.6)",
+                ],
+                borderWidth: 2,
+                borderColor: "#777",
+                hoverBorderWidth: 3,
+                hoverBorderColor: "#000",
+              },
+            ],
+          },
+          options: {
+            title: {
+              display: true,
+              text: "Next 10 Days Flight Fare Prediction",
+              fontSize: 16,
+            },
+            legend: {
+              display: false,
+              position: "right",
+              labels: {
+                fontColor: "#000",
+              },
+            },
+            layout: {
+              padding: {
+                left: 300,
+                right: 300,
+                bottom: 350,
+                top: 50,
+              },
+            },
+            tooltips: {
+              enabled: true,
+            },
+          },
+        });
+      }
+    </script>
+
+    <h3 id="test"></h3>
+
+    <canvas id="myChart"></canvas>
+    <canvas id="myChart2"></canvas>
+
+    <!-- JavaScript -->
+
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
